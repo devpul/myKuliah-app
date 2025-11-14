@@ -29,6 +29,11 @@ class User extends Authenticatable
     public $timestamps = false;
 
     // provide
+    public function schedule()
+    {
+        $this->hasMany(Schedule::class, 'schedule_id');
+    }
+
     public function document()
     {
         $this->hasMany(Document::class, 'user_id');
