@@ -13,7 +13,7 @@ class Role extends Model
 
     public $timestamps = false;
 
-    // relasi
+    // provide
     public function user()
     {
         $this->hasOne(User::class, 'role_id');

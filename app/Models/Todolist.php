@@ -18,4 +18,10 @@ class Todolist extends Model
     ];
 
     public $timestamps = false;
+
+    // belongs To
+    public function category()
+    {
+        $this->belongsTo(Category::class, 'category_id');
+    }
 }

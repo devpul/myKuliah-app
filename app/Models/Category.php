@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Todolist;
 use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
@@ -12,6 +13,9 @@ class Category extends Model
 
     public $timestamps = false;
 
-    // relations
-    // public function 
+    // provide
+    public function todolist()
+    {
+        $this->hasOne(Todolist::class, 'category_id');
+    }
 }

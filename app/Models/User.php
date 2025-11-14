@@ -4,6 +4,8 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Role;
+use App\Models\Document;
+use App\Models\ChatSession;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -26,6 +28,18 @@ class User extends Authenticatable
 
     public $timestamps = false;
 
+    // provide
+    public function document()
+    {
+        $this->hasMany(Document::class, 'user_id');
+    }
+
+    public function chat_session()
+    {
+        $this->hasOne(ChatSession::class, 'user_id');
+    }
+
+    // belongs to
     public function role()
     {
         $this->belongsTo(Role::class, 'role_id');
