@@ -57,29 +57,18 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        // 1️⃣ Validasi input
         $validated = $request->validate([
             'email' => 'required|email',
             'password' => 'required|string',
         ]);
 
         if (!Auth::attempt($validated)) {
-            return back()->with('failed', 'Kamu belum login');
-        }            
-
-        if (Auth::attempt($validated)) {
-            // 3️⃣ Regenerasi session ID (keamanan)
-            $request->session()->regenerate();
-
-            // 4️⃣ Redirect ke halaman setelah login sukses
-            return redirect()->route('dashboard')
-                            ->with('success', 'Login successful!');
+            return redirect()->route('login')->with('failed', 'Harap login terlebih dahulu');
         }
 
-        // 5️⃣ Kalau gagal login
-        return back()->withErrors([
-            'email' => 'Email atau password salah.',
-        ])->onlyInput('email');
+        $request->session()->regenerate();
+
+        return redirect()->route('dashboard')->with('success', 'Login successful!');
     }
 
     public function logout(Request $request)
@@ -89,6 +78,6 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('index_login')->with('success', 'Berhasil logout.');
+        return redirect()->route('login')->with('success', 'Berhasil logout.');
     }
 }
