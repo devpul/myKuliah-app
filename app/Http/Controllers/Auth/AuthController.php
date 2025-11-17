@@ -16,6 +16,7 @@ class AuthController extends Controller
         try {
                 
                 return $request->validate([
+                    'nomor_mahasiswa' => 'required|unique:users,mahasiswa_id|string',
                     'name' => 'required|string',         
                     'password' => 'required|string',         
                     'email' => 'required|unique:users,email|email',         
@@ -38,26 +39,29 @@ class AuthController extends Controller
 
         $user = User::create([
             'role_id'   =>  1,  //admin
+            'mahasiswa_id' =>  $validated['nomor_mahasiswa'],
             'name'      =>  $validated['name'],
             'password'  =>  Hash::make($validated['password']),
             'email'     =>  $validated['email'],
-            'address'   =>  null,
-            'image'     =>  null,
         ]);
 
 
-        return redirect()->route('index_login')
+        return redirect()->route('login')
                         ->with('success', 'Berhasil membuat akun');
     }
 
     public function indexLogin()
     {
-        return view('Auth.Login');
+        return view('Auth.Auth');
+    }
+
+    public function indexRegister()
+    {
+        return view('Auth.Auth');
     }
 
     public function login(Request $request)
     {
-        // 1️⃣ Validasi input
         $validated = $request->validate([
             'email' => 'required|email',
             'password' => 'required|string',
@@ -68,15 +72,13 @@ class AuthController extends Controller
         }            
 
         if (Auth::attempt($validated)) {
-            // 3️⃣ Regenerasi session ID (keamanan)
+
             $request->session()->regenerate();
 
-            // 4️⃣ Redirect ke halaman setelah login sukses
             return redirect()->route('dashboard')
                             ->with('success', 'Login successful!');
         }
 
-        // 5️⃣ Kalau gagal login
         return back()->withErrors([
             'email' => 'Email atau password salah.',
         ])->onlyInput('email');
@@ -89,6 +91,6 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('index_login')->with('success', 'Berhasil logout.');
+        return redirect()->route('login')->with('success', 'Berhasil logout.');
     }
 }

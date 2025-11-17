@@ -20,10 +20,11 @@ return new class extends Migration
                     ->references('id')->on('roles')
                     ->onUpdate('cascade')
                     ->onDelete('set null');
-
+            $table->string('mahasiswa_id')->unique();
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
+            $table->string('google_id')->nullable();
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
