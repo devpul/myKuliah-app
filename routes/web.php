@@ -20,7 +20,7 @@ Route::get('/auth/google/callback', [GoogleController::class, 'callback']);
 
         
 Route::middleware('auth')->group(function () {
-Route::post('/logout', [AuthController::class, 'logout'])->name('store_logout');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });
