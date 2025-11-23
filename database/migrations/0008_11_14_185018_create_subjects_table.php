@@ -21,9 +21,12 @@ return new class extends Migration
                     ->onUpdate('cascade')
                     ->onDelete('set null');
 
+            $table->string('subject_code');
+
             $table->string('subject_name');
             $table->tinyInteger('semester');
             $table->tinyInteger('credits');
+            $table->string('color')->nullable();
             $table->text('description')->nullable();
         });
     }

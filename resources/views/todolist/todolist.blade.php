@@ -16,7 +16,7 @@
             <label>File</label>
             <input type="file" name="file_attachment" required>
         </div>
-        
+
         <button type="submit" class="bg-blue-500 text-white font-semibold px-4 py-1 mt-2">Submit</button>
     </form>
 @endsection

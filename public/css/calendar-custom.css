@@ -1,0 +1,44 @@
+/* Ubah warna header toolbar */
+.fc-toolbar-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.fc-button {
+    background: #4f46e5 !important;
+    border: none !important;
+    color: white !important;
+    border-radius: 8px !important;
+    padding: 6px 14px !important;
+}
+
+.fc-button:hover {
+    background: #4338ca !important;
+}
+
+/* Border & cell */
+.fc-daygrid-day {
+    border: 1px solid #e2e8f0 !important;
+    background: #ffffff;
+    /* padding: 5rem !important; */
+}
+
+/* Hover tanggal */
+.fc-daygrid-day:hover {
+    background: #f1f5f9 !important;
+}
+
+/* Event style */
+.fc-event {
+    border-radius: 10px !important;
+    padding: 4px 6px !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    background: linear-gradient(135deg, #6366f1, #3b82f6) !important;
+    color: white !important;
+}
+
+.fc-timeline-body {
+  overflow-x: auto !important;
+}

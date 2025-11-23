@@ -12,9 +12,11 @@ class Subject extends Model
 
     protected $fillable = [
         'lecture_id', // fk
+        'subject_code',
         'subject_name',
         'semester',
         'credits',
+        'color',
         'description'
     ];
 
