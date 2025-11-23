@@ -45,7 +45,6 @@ class AuthController extends Controller
             'image'     =>  null,
         ]);
 
-
         return redirect()->route('index_login')
                         ->with('success', 'Berhasil membuat akun');
     }

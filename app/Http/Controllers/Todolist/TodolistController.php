@@ -18,23 +18,28 @@ class TodolistController extends Controller
     {
         try {
             $request->validate([
-                'file_attachment' => 'required|file|mimes:docx|max:1000', // Example validation rules
+                'file_attachment' => 'required|file|mimes:pdf,xlsx,docx,ppt|max:2048', // Example validation rules
             ],[
-                'file_attachment.max' => 'The file attachment field must not be greater than 1MB.'
+                'file_attachment.max' => 'The file attachment field must not be greater than 2MB.'
             ]);
 
             // Store the file
             if ($request->hasFile('file_attachment')) {
                 $file = $request->file('file_attachment');
 
+                $originalName = $file->getClientOriginalName();
+                $fileSize = $file->getSize();
+                $fileNameWithoutFormat = pathinfo($originalName, PATHINFO_FILENAME);
+
                 // Store the file in the 'public' disk under a 'uploads' directory
                 $path = $file->store('uploads', 'public');
 
                 // logic masukan request file_attachment ke database..
-                // $document = 
-                // Document::create([
-                    
-                // ]);
+                $document = 
+                Document::create([
+                    'title' => $fileNameWithoutFormat,
+                    'file_attachment' => $path
+                ]);
 
                 return back()->with('success', 'File uploaded successfully!');
             }
