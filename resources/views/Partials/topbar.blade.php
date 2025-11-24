@@ -14,7 +14,7 @@
     <div class="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
         <!-- Search -->
         <form class="relative flex flex-1" action="#" method="GET">
-            <label for="search-field" class="sr-only">Search</label>
+            {{-- <label for="search-field" class="sr-only">Search</label>
             <svg class="pointer-events-none absolute inset-y-0 left-0 h-full w-5 text-gray-400" viewBox="0 0 20 20"
                 fill="currentColor">
                 <path fill-rule="evenodd"
@@ -23,49 +23,10 @@
             </svg>
             <input id="search-field"
                 class="block h-full w-full border-0 py-0 pl-8 pr-0 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm"
-                placeholder="Search..." type="search" name="search">
+                placeholder="Search..." type="search" name="search"> --}}
         </form>
 
         <div class="flex items-center gap-x-4 lg:gap-x-6">
-            <!-- Add Button with Dropdown -->
-            <div class="relative dropdown-container">
-                <button type="button" onclick="toggleDropdown('add-dropdown')"
-                    class="flex items-center gap-x-2 rounded-lg bg-primary-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-600 focus:ring-offset-2">
-                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                    </svg>
-                    <span class="hidden sm:inline">Add</span>
-                </button>
-
-                <!-- Dropdown menu -->
-                <div id="add-dropdown"
-                    class="hidden absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-xl bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                    <button onclick="openModal('add-task-modal'); toggleDropdown('add-dropdown')"
-                        class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-x-3">
-                        <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
-                        </svg>
-                        Task
-                    </button>
-                    <button onclick="openModal('add-exam-modal'); toggleDropdown('add-dropdown')"
-                        class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-x-3">
-                        <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                        </svg>
-                        Exam
-                    </button>
-                    <button onclick="openModal('add-subject-modal'); toggleDropdown('add-dropdown')"
-                        class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-x-3">
-                        <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                        </svg>
-                        Subject
-                    </button>
-                </div>
-            </div>
 
             <!-- Separator -->
             <div class="hidden lg:block lg:h-6 lg:w-px lg:bg-gray-200" aria-hidden="true"></div>
@@ -93,8 +54,9 @@
                         {{ strtoupper(substr(auth()->user()->name, 0, 2)) }}
                     </div>
                     <span class="hidden lg:flex lg:items-center">
-                        <span class="ml-3 text-sm font-semibold leading-6 text-gray-900" aria-hidden="true">{{ auth()->user()->name }}
-                            </span>
+                        <span class="ml-3 text-sm font-semibold leading-6 text-gray-900"
+                            aria-hidden="true">{{ auth()->user()->name }}
+                        </span>
                         <svg class="ml-2 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd"
                                 d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
@@ -112,7 +74,8 @@
                     <hr class="my-2">
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
-                        <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                        <button type="submit"
+                            class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
                             Sign out
                         </button>
                     </form>

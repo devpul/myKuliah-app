@@ -69,17 +69,6 @@
             }
         });
 
-        // Modal Functions
-        function openModal(modalId) {
-            document.getElementById(modalId).classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeModal(modalId) {
-            document.getElementById(modalId).classList.add('hidden');
-            document.body.style.overflow = 'auto';
-        }
-
         // Dropdown Toggle
         function toggleDropdown(dropdownId) {
             const dropdown = document.getElementById(dropdownId);
