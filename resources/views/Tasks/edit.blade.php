@@ -3,7 +3,7 @@
 @section('title', 'Edit Task - MyKuliah')
 
 @section('content')
-    <div class="px-4 sm:px-6 lg:px-8 max-w-2xl mx-auto">
+    <div class="px-4 sm:px-6 lg:px-8 mx-auto">
         <div class="mb-6">
             <a href="{{ route('tasks.index') }}" class="text-primary-600 hover:text-primary-700 font-medium">
                 ← Back to Tasks
@@ -58,7 +58,8 @@
                         class="w-full rounded-lg border border-gray-300 shadow-sm px-4 py-2 focus:border-primary-500 focus:ring-primary-500">
                         <option value="">-- Select Subject --</option>
                         @foreach ($subjects as $subject)
-                            <option value="{{ $subject->id }}" {{ old('subject_id', $task->subject_id) == $subject->id ? 'selected' : '' }}>
+                            <option value="{{ $subject->id }}"
+                                {{ old('subject_id', $task->subject_id) == $subject->id ? 'selected' : '' }}>
                                 {{ $subject->name }} ({{ $subject->code }})
                             </option>
                         @endforeach
@@ -76,8 +77,10 @@
                     <select id="type" name="type" required
                         class="w-full rounded-lg border {{ $errors->has('type') ? 'border-red-500' : 'border-gray-300' }} shadow-sm px-4 py-2 focus:border-primary-500 focus:ring-primary-500">
                         <option value="quiz" {{ old('type', $task->type) == 'quiz' ? 'selected' : '' }}>Quiz</option>
-                        <option value="assignment" {{ old('type', $task->type) == 'assignment' ? 'selected' : '' }}>Assignment</option>
-                        <option value="project" {{ old('type', $task->type) == 'project' ? 'selected' : '' }}>Project</option>
+                        <option value="assignment" {{ old('type', $task->type) == 'assignment' ? 'selected' : '' }}>
+                            Assignment</option>
+                        <option value="project" {{ old('type', $task->type) == 'project' ? 'selected' : '' }}>Project
+                        </option>
                     </select>
                     @error('type')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
@@ -89,8 +92,8 @@
                     <label for="due_date" class="block text-sm font-medium text-gray-700 mb-2">
                         Due Date <span class="text-red-500">*</span>
                     </label>
-                    <input type="datetime-local" id="due_date" name="due_date"
-                        value="{{ old('due_date', $task->due_date) }}" required
+                    <input type="date" id="due_date" name="due_date" value="{{ old('due_date', $task->due_date) }}"
+                        required
                         class="w-full rounded-lg border {{ $errors->has('due_date') ? 'border-red-500' : 'border-gray-300' }} shadow-sm px-4 py-2 focus:border-primary-500 focus:ring-primary-500">
                     @error('due_date')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>

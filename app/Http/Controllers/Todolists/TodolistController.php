@@ -213,12 +213,11 @@ class TodolistController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'subject_id' => 'nullable|exists:subjects,id',
+            'type' => 'required|in:quiz,assignment,project',
             'due_date' => 'required|date',
             'priority' => 'required|in:low,medium,high',
             'status' => 'required|in:doing,done',
         ]);
-
-        $validated['type'] = 'exam';
 
         $exam->update($validated);
 
