@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use Illuminate\Container\Attributes\Auth;
+Route::get('/', [AuthController::class, 'indexLogin']);
 
 Route::get('/register', [AuthController::class, 'indexRegister'])->name('register');
 Route::post('/register', [AuthController::class, 'register'])->name('store_register');
@@ -18,9 +19,8 @@ Route::get('/auth/google', [GoogleController::class, 'redirect'])->name('google.
 Route::get('/auth/google/callback', [GoogleController::class, 'callback']);
 
 
-        
 Route::middleware('auth')->group(function () {
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });

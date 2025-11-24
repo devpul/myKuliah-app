@@ -9,8 +9,9 @@ class ChatSession extends Model
     protected $table = 'chat_sessions';
 
     protected $fillable = [
-        'user_id',
+        'users_id',
         'title',
+        'user_id',
         // 'created_at' // timestamp
     ];
 
@@ -25,6 +26,6 @@ class ChatSession extends Model
     // belongs to
     public function user()
     {
-        $this->belongsTo(User::class, 'user_id');
+        $this->belongsTo(User::class, 'users_id');
     }
 }

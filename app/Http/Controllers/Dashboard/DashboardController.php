@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
     public function index() {
-    $user = auth()->user();
+    $user = Auth::user();
     $jadwal = [
         ['mata_kuliah' => 'Pemrograman Web', 'waktu' => 'Senin, 08:00-10:00', 'ruangan' => 'Lab Komputer 1'],
         // Tambah data dummy lainnya

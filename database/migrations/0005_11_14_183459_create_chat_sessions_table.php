@@ -15,12 +15,11 @@ return new class extends Migration
             $table->id();
 
             // foreign key 1
-            $table->unsignedBigInteger('user_id')->nullable();
-            $table->foreign('user_id')
+            $table->unsignedBigInteger('users_id')->nullable();
+            $table->foreign('users_id')
                     ->references('id')->on('users')
                     ->onUpdate('cascade')
                     ->onDelete('set null');
-                    
             $table->timestamp('created_at');
         });
     }

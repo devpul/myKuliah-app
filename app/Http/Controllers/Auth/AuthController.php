@@ -68,20 +68,12 @@ class AuthController extends Controller
         ]);
 
         if (!Auth::attempt($validated)) {
-            return back()->with('failed', 'Kamu belum login');
+            return back()->with('failed', 'Email atau password salah.')->onlyInput('email');
         }            
-
-        if (Auth::attempt($validated)) {
-
             $request->session()->regenerate();
 
-            return redirect()->route('dashboard')
-                            ->with('success', 'Login successful!');
-        }
+            return redirect()->route('dashboard')->with('success', 'Login successful!');
 
-        return back()->withErrors([
-            'email' => 'Email atau password salah.',
-        ])->onlyInput('email');
     }
 
     public function logout(Request $request)

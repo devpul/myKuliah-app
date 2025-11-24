@@ -24,6 +24,7 @@ class GoogleController extends Controller
         // Jika user belum ada → buat user baru
         if (!$user) {
             $user = User::create([
+                'mahasiswa_id' => 'N/A',
                 'name' => $googleUser->getName(),
                 'email' => $googleUser->getEmail(),
                 'password' => bcrypt('mykuliahuser'), // Set password default

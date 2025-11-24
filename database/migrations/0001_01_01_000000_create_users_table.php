@@ -13,18 +13,18 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            
-            // foreign key 1
-            $table->unsignedBigInteger('role_id')->nullable();
-            $table->foreign('role_id')
-                    ->references('id')->on('roles')
-                    ->onUpdate('cascade')
-                    ->onDelete('set null');
             $table->string('mahasiswa_id')->unique();
+            // foreign key 1
+            // $table->unsignedBigInteger('role_id')->nullable();
+            // $table->foreign('role_id')
+            //         ->references('id')->on('roles')
+            //         ->onUpdate('cascade')
+            //         ->onDelete('set null');
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
             $table->string('google_id')->nullable();
+            $table->string('profile')->nullable();
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
