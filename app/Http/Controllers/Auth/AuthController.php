@@ -52,12 +52,12 @@ class AuthController extends Controller
 
     public function indexLogin()
     {
-        return view('Auth.Auth');
+        return view('Auth.login');
     }
 
     public function indexRegister()
     {
-        return view('Auth.Auth');
+        return view('Auth.register');
     }
 
     public function login(Request $request)

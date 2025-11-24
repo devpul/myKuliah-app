@@ -1,17 +1,17 @@
 @extends('layouts.app')
 
-@section('title', 'Create Task - MyKuliah')
+@section('title', 'Create Exam - MyKuliah')
 
 @section('content')
     <div class="px-4 sm:px-6 lg:px-8 mx-auto">
         <div class="mb-6">
-            <a href="{{ route('tasks.index') }}" class="text-primary-600 hover:text-primary-700 font-medium">
-                ← Back to Tasks
+            <a href="{{ route('exams.index') }}" class="text-primary-600 hover:text-primary-700 font-medium">
+                ← Back to Exams
             </a>
         </div>
 
         <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
-            <h1 class="text-2xl font-bold text-gray-900 mb-6">Create New Task</h1>
+            <h1 class="text-2xl font-bold text-gray-900 mb-6">Create New Exam</h1>
 
             @if ($errors->any())
                 <div class="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
@@ -24,18 +24,19 @@
                 </div>
             @endif
 
-            <form action="{{ route('tasks.store') }}" method="POST" class="space-y-6">
+            <form action="{{ route('exams.store') }}" method="POST" class="space-y-6">
                 @csrf
-                <input type="hidden" name="category_id" value="{{ $tasksCategory->id }}">
+                <input type="hidden" name="category_id" value="{{ $examsCategory->id }}">
+                <input type="hidden" name="type" value="exam">
 
                 <!-- Title Field -->
                 <div>
                     <label for="title" class="block text-sm font-medium text-gray-700 mb-2">
-                        Task Title <span class="text-red-500">*</span>
+                        Exam Title <span class="text-red-500">*</span>
                     </label>
                     <input type="text" id="title" name="title" value="{{ old('title') }}" required
                         class="w-full rounded-lg border {{ $errors->has('title') ? 'border-red-500' : 'border-gray-300' }} shadow-sm px-4 py-2 focus:border-primary-500 focus:ring-primary-500"
-                        placeholder="e.g., Complete Algorithm Assignment">
+                        placeholder="e.g., Midterm Exam">
                     @error('title')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                     @enderror
@@ -48,7 +49,7 @@
                     </label>
                     <textarea id="description" name="description" rows="4"
                         class="w-full rounded-lg border border-gray-300 shadow-sm px-4 py-2 focus:border-primary-500 focus:ring-primary-500"
-                        placeholder="Add details about this task...">{{ old('description') }}</textarea>
+                        placeholder="Add details about this exam...">{{ old('description') }}</textarea>
                 </div>
 
                 <!-- Subject Field -->
@@ -70,20 +71,31 @@
                     @enderror
                 </div>
 
-                <!-- Type Field -->
-                <div>
-                    <label for="type" class="block text-sm font-medium text-gray-700 mb-2">
-                        Type <span class="text-red-500">*</span>
-                    </label>
-                    <select id="type" name="type" required
-                        class="w-full rounded-lg border {{ $errors->has('type') ? 'border-red-500' : 'border-gray-300' }} shadow-sm px-4 py-2 focus:border-primary-500 focus:ring-primary-500">
-                        <option value="quiz" {{ old('type') == 'quiz' ? 'selected' : '' }}>Quiz</option>
-                        <option value="assignment" {{ old('type') == 'assignment' ? 'selected' : '' }}>Assignment</option>
-                        <option value="project" {{ old('type') == 'project' ? 'selected' : '' }}>Project</option>
-                    </select>
-                    @error('type')
-                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                    @enderror
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Time Field -->
+                    <div>
+                        <label for="time" class="block text-sm font-medium text-gray-700 mb-2">
+                            Time
+                        </label>
+                        <input type="time" id="time" name="time" value="{{ old('time') }}"
+                            class="w-full rounded-lg border {{ $errors->has('time') ? 'border-red-500' : 'border-gray-300' }} shadow-sm px-4 py-2 focus:border-primary-500 focus:ring-primary-500">
+                        @error('time')
+                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Room Field -->
+                    <div>
+                        <label for="room" class="block text-sm font-medium text-gray-700 mb-2">
+                            Room
+                        </label>
+                        <input type="text" id="room" name="room" value="{{ old('room') }}"
+                            class="w-full rounded-lg border {{ $errors->has('room') ? 'border-red-500' : 'border-gray-300' }} shadow-sm px-4 py-2 focus:border-primary-500 focus:ring-primary-500"
+                            placeholder="e.g., Room 101">
+                        @error('room')
+                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
                 </div>
 
                 <!-- Due Date Field -->
@@ -135,9 +147,9 @@
                 <div class="flex gap-3 pt-6 border-t border-gray-200">
                     <button type="submit"
                         class="flex-1 bg-primary-600 text-white rounded-lg px-4 py-2 font-medium hover:bg-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-600">
-                        Create Task
+                        Create Exam
                     </button>
-                    <a href="{{ route('tasks.index') }}"
+                    <a href="{{ route('exams.index') }}"
                         class="flex-1 bg-gray-100 text-gray-700 rounded-lg px-4 py-2 font-medium hover:bg-gray-200 text-center">
                         Cancel
                     </a>

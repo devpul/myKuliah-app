@@ -2,20 +2,26 @@
 
 namespace App\Models;
 
-use App\Models\Todolist;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
+    use HasFactory;
+
     protected $table = 'categories';
 
-    protected $fillable = ['name','description'];
+    protected $fillable = [
+        'name',
+        'slug',
+        'color',
+    ];
 
-    public $timestamps = false;
-
-    // provide
-    public function todolist()
+    /**
+     * Get the todolists for the category.
+     */
+    public function todolists()
     {
-        $this->hasOne(Todolist::class, 'category_id');
+        return $this->hasMany(Todolist::class);
     }
 }

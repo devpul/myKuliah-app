@@ -5,23 +5,29 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Document extends Model
+class Activity extends Model
 {
     use HasFactory;
 
-    protected $table = 'documents';
+    protected $table = 'activities';
 
     protected $fillable = [
         'user_id',
-        'filename',
-        'path',
-        'mime_type',
-        'size',
-        'notes',
+        'name',
+        'category',
+        'date',
+        'time',
+        'location',
+        'description',
+        'color',
+    ];
+
+    protected $casts = [
+        'date' => 'date',
     ];
 
     /**
-     * Get the user that owns the document.
+     * Get the user that owns the activity.
      */
     public function user()
     {

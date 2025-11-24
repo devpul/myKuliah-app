@@ -1,7 +1,12 @@
 @php
-    $month = 'November 2025';
-    $daysInMonth = 30;
-    $startDay = 6; // Saturday (1=Senin, ..., 6=Sabtu, 0=Minggu)
+    $month = $today->format('F Y');
+    $daysInMonth = $today->daysInMonth;
+    
+    $firstDayOfMonth = $today->copy()->startOfMonth();
+    $startDayOfWeek = $firstDayOfMonth->dayOfWeek; // 0 for Sunday, 1 for Monday, etc.
+    // Adjust so Monday is the first day (1=Mon, ..., 7=Sun)
+    $startDay = ($startDayOfWeek === 0) ? 7 : $startDayOfWeek;
+
     $dayNames = ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'];
 
     // Create calendar grid
@@ -14,8 +19,8 @@
     }
 
     // Fill days
-    for ($day = 1; $day <= $daysInMonth; $day++) {
-        $currentWeek[] = $day;
+    for ($dayNum = 1; $dayNum <= $daysInMonth; $dayNum++) {
+        $currentWeek[] = $dayNum;
         if (count($currentWeek) == 7) {
             $calendar[] = $currentWeek;
             $currentWeek = [];
@@ -63,30 +68,23 @@
         <!-- Calendar Days -->
         <div class="grid grid-cols-7 gap-px bg-gray-200 border border-gray-200 rounded-lg overflow-hidden">
             @foreach ($calendar as $week)
-                @foreach ($week as $day)
+                @foreach ($week as $dayNum)
                     @php
-                        $isToday = $day == 10;
+                        $isToday = false;
                         $hasClasses = false;
                         $classDots = [];
+                        $currentDay = null;
 
-                        if ($day) {
-                            // Map day number to day of week (simplified)
-                            $dayOfWeek = ($day + $startDay - 1) % 7;
-                            if ($dayOfWeek == 0) {
-                                $dayOfWeek = 7;
-                            }
+                        if ($dayNum) {
+                            $currentDay = \Carbon\Carbon::createFromDate($today->year, $today->month, $dayNum);
+                            $isToday = $currentDay->isSameDay(\Carbon\Carbon::now());
+                            
+                            $daySchedules = $schedules->filter(fn($s) => $s->day_of_week == $currentDay->dayOfWeekIso);
+                            $hasClasses = $daySchedules->count() > 0;
 
-                            // Check if there are classes on this day
-                            $dayClasses = collect($classes)->filter(fn($c) => $c['day'] == $dayOfWeek);
-                            $hasClasses = $dayClasses->count() > 0;
-
-                            // Get unique subjects for this day
-                            $classDots = $dayClasses
+                            $classDots = $daySchedules
                                 ->take(3)
-                                ->map(function ($c) use ($subjects) {
-                                    $subject = collect($subjects)->firstWhere('id', $c['subject_id']);
-                                    return $subject['color'];
-                                })
+                                ->map(fn($s) => $s->subject->color ?? 'bg-gray-400')
                                 ->unique()
                                 ->toArray();
                         }
@@ -94,11 +92,11 @@
 
                     <div
                         class="bg-white min-h-[100px] p-3 {{ $isToday ? 'ring-2 ring-primary-600 ring-inset' : '' }} hover:bg-gray-50 transition-colors">
-                        @if ($day)
+                        @if ($dayNum)
                             <div class="flex flex-col h-full">
                                 <span
                                     class="text-sm font-semibold {{ $isToday ? 'bg-primary-600 text-white h-6 w-6 rounded-full flex items-center justify-center' : 'text-gray-900' }}">
-                                    {{ $day }}
+                                    {{ $dayNum }}
                                 </span>
 
                                 @if ($hasClasses)
@@ -125,7 +123,7 @@
             <div class="flex items-center gap-2">
                 <div
                     class="h-6 w-6 rounded-full bg-primary-600 flex items-center justify-center text-white text-xs font-semibold">
-                    10</div>
+                    {{ \Carbon\Carbon::now()->day }}</div>
                 <span>Today</span>
             </div>
             <div class="flex items-center gap-2">

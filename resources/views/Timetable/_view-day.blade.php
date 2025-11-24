@@ -1,7 +1,12 @@
 @php
-    $currentDay = 1; // Senin
-    $dayName = ['', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'][$currentDay];
-    $todayClasses = collect($classes)->filter(fn($c) => $c['day'] == $currentDay)->sortBy('start');
+    // Assume $currentDate is passed, or default to today if not (for single day view)
+    $displayDate = $displayDate ?? \Carbon\Carbon::now();
+    $currentDayOfWeekIso = $displayDate->dayOfWeekIso; // 1=Monday, 7=Sunday
+
+    $dayNames = ['', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
+    $shortDayNames = ['', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'];
+
+    $todayClasses = $schedules->filter(fn($s) => $s->day_of_week == $currentDayOfWeekIso)->sortBy('start_time');
 @endphp
 
 <div class="space-y-6">
@@ -10,13 +15,13 @@
         <div class="flex items-center gap-4 overflow-x-auto">
             @for ($d = 1; $d <= 7; $d++)
                 @php
-                    $dName = ['', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'][$d];
-                    $date = 9 + $d;
+                    $dateForButton = \Carbon\Carbon::now()->startOfWeek()->addDays($d - 1); // StartOfWeek is Monday
+                    $isDisplayDate = $dateForButton->dayOfWeekIso == $currentDayOfWeekIso;
                 @endphp
                 <button
-                    class="flex-shrink-0 flex flex-col items-center justify-center p-3 rounded-lg {{ $d == $currentDay ? 'bg-primary-600 text-white' : 'bg-gray-50 text-gray-700 hover:bg-gray-100' }} transition-colors">
-                    <span class="text-xs font-medium">{{ $dName }}</span>
-                    <span class="text-lg font-bold mt-1">{{ $date }}</span>
+                    class="flex-shrink-0 flex flex-col items-center justify-center p-3 rounded-lg {{ $isDisplayDate ? 'bg-primary-600 text-white' : 'bg-gray-50 text-gray-700 hover:bg-gray-100' }} transition-colors">
+                    <span class="text-xs font-medium">{{ $shortDayNames[$d] }}</span>
+                    <span class="text-lg font-bold mt-1">{{ $dateForButton->day }}</span>
                 </button>
             @endfor
         </div>
@@ -25,33 +30,30 @@
     <!-- Classes List -->
     <div class="bg-white rounded-2xl shadow-sm border border-gray-200">
         <div class="px-6 py-4 border-b border-gray-200">
-            <h3 class="text-lg font-semibold text-gray-900">{{ $dayName }}, 10 November 2025</h3>
-            <p class="text-sm text-gray-600 mt-1">{{ count($todayClasses) }} classes scheduled</p>
+            <h3 class="text-lg font-semibold text-gray-900">{{ $dayNames[$currentDayOfWeekIso] }}, {{ $displayDate->format('d F Y') }}</h3>
+            <p class="text-sm text-gray-600 mt-1">{{ $todayClasses->count() }} classes scheduled</p>
         </div>
 
         <div class="p-6">
-            @forelse($todayClasses as $class)
-                @php
-                    $subject = collect($subjects)->firstWhere('id', $class['subject_id']);
-                @endphp
+            @forelse($todayClasses as $schedule)
                 <div class="flex gap-6 p-5 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors mb-4 last:mb-0">
                     <!-- Time -->
                     <div class="flex-shrink-0 text-center">
-                        <div class="text-sm font-semibold text-gray-900">{{ $class['start'] }}</div>
+                        <div class="text-sm font-semibold text-gray-900">{{ \Carbon\Carbon::parse($schedule->start_time)->format('H:i') }}</div>
                         <div class="text-xs text-gray-500 my-2">—</div>
-                        <div class="text-sm font-semibold text-gray-900">{{ $class['end'] }}</div>
+                        <div class="text-sm font-semibold text-gray-900">{{ \Carbon\Carbon::parse($schedule->end_time)->format('H:i') }}</div>
                     </div>
 
                     <!-- Color Bar -->
-                    <div class="{{ $subject['color'] }} w-1 rounded-full"></div>
+                    <div class="{{ $schedule->subject->color ?? 'bg-gray-500' }} w-1 rounded-full"></div>
 
                     <!-- Content -->
                     <div class="flex-1">
                         <div class="flex items-start justify-between">
                             <div>
-                                <h4 class="font-semibold text-gray-900 text-lg">{{ $subject['name'] }}</h4>
-                                <p class="text-sm text-gray-600 mt-1">{{ $subject['code'] }} •
-                                    {{ $subject['lecturer'] }}</p>
+                                <h4 class="font-semibold text-gray-900 text-lg">{{ $schedule->subject->name ?? 'N/A' }}</h4>
+                                <p class="text-sm text-gray-600 mt-1">{{ $schedule->subject->code ?? 'N/A' }} •
+                                    {{ $schedule->lecture->name ?? 'N/A' }}</p>
                                 <div class="flex items-center gap-4 mt-3">
                                     <div class="flex items-center gap-2 text-sm text-gray-600">
                                         <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -60,10 +62,10 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                                         </svg>
-                                        {{ $class['room'] }}
+                                        {{ $schedule->room ?? 'N/A' }}
                                     </div>
                                     @php
-                                        $duration = (strtotime($class['end']) - strtotime($class['start'])) / 60;
+                                        $duration = \Carbon\Carbon::parse($schedule->start_time)->diffInMinutes(\Carbon\Carbon::parse($schedule->end_time));
                                     @endphp
                                     <div class="flex items-center gap-2 text-sm text-gray-600">
                                         <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -75,8 +77,8 @@
                                 </div>
                             </div>
                             <span
-                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium {{ $subject['color'] }} bg-opacity-10 text-gray-900">
-                                {{ $subject['code'] }}
+                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium {{ $schedule->subject->color ?? 'bg-gray-500' }} bg-opacity-10 text-gray-900">
+                                {{ $schedule->subject->code ?? 'N/A' }}
                             </span>
                         </div>
                     </div>

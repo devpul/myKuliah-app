@@ -3,96 +3,6 @@
 @section('title', 'Tasks - MyKuliah')
 
 @section('content')
-    @php
-        $subjects = [
-            ['id' => 1, 'code' => 'CS101', 'name' => 'Algoritma & Pemrograman', 'color' => 'bg-blue-500'],
-            ['id' => 2, 'code' => 'MTK201', 'name' => 'Kalkulus II', 'color' => 'bg-green-500'],
-            ['id' => 3, 'code' => 'FIS101', 'name' => 'Fisika Dasar', 'color' => 'bg-purple-500'],
-            ['id' => 4, 'code' => 'ENG102', 'name' => 'English for IT', 'color' => 'bg-yellow-500'],
-            ['id' => 5, 'code' => 'DB201', 'name' => 'Basis Data', 'color' => 'bg-red-500'],
-        ];
-
-        $tasks = [
-            [
-                'id' => 1,
-                'title' => 'Tugas Algoritma Sorting',
-                'subject_id' => 1,
-                'due_date' => '2025-11-10',
-                'priority' => 'high',
-                'status' => 'due_today',
-            ],
-            [
-                'id' => 2,
-                'title' => 'Latihan Integral',
-                'subject_id' => 2,
-                'due_date' => '2025-11-08',
-                'priority' => 'medium',
-                'status' => 'overdue',
-            ],
-            [
-                'id' => 3,
-                'title' => 'Lab Report Mekanika',
-                'subject_id' => 3,
-                'due_date' => '2025-11-15',
-                'priority' => 'high',
-                'status' => 'scheduled',
-            ],
-            [
-                'id' => 4,
-                'title' => 'Essay Technology Impact',
-                'subject_id' => 4,
-                'due_date' => '2025-11-12',
-                'priority' => 'medium',
-                'status' => 'scheduled',
-            ],
-            [
-                'id' => 5,
-                'title' => 'Project ERD Design',
-                'subject_id' => 5,
-                'due_date' => '2025-11-05',
-                'priority' => 'high',
-                'status' => 'completed',
-            ],
-            [
-                'id' => 6,
-                'title' => 'Presentasi Proyek Akhir',
-                'subject_id' => 1,
-                'due_date' => '2025-11-18',
-                'priority' => 'high',
-                'status' => 'scheduled',
-            ],
-            [
-                'id' => 7,
-                'title' => 'Quiz Persiapan UTS',
-                'subject_id' => 2,
-                'due_date' => '2025-11-11',
-                'priority' => 'low',
-                'status' => 'scheduled',
-            ],
-            [
-                'id' => 8,
-                'title' => 'Laporan Praktikum 3',
-                'subject_id' => 3,
-                'due_date' => '2025-11-03',
-                'priority' => 'medium',
-                'status' => 'completed',
-            ],
-        ];
-
-        $statusBadges = [
-            'overdue' => ['bg' => 'bg-red-100', 'text' => 'text-red-800', 'label' => 'Overdue'],
-            'due_today' => ['bg' => 'bg-amber-100', 'text' => 'text-amber-800', 'label' => 'Due Today'],
-            'scheduled' => ['bg' => 'bg-blue-100', 'text' => 'text-blue-800', 'label' => 'Scheduled'],
-            'completed' => ['bg' => 'bg-green-100', 'text' => 'text-green-800', 'label' => 'Completed'],
-        ];
-
-        $priorityBadges = [
-            'high' => ['text' => 'text-red-700', 'icon' => '!!!'],
-            'medium' => ['text' => 'text-yellow-700', 'icon' => '!!'],
-            'low' => ['text' => 'text-gray-700', 'icon' => '!'],
-        ];
-    @endphp
-
     <div class="px-4 sm:px-6 lg:px-8">
         <!-- Header -->
         <div class="sm:flex sm:items-center sm:justify-between mb-6">
@@ -101,13 +11,13 @@
                 <p class="mt-2 text-sm text-gray-700">Manage your homework and assignments</p>
             </div>
             <div class="mt-4 sm:mt-0">
-                <button onclick="openModal('add-task-modal')"
+                <a href="{{ route('tasks.create') }}"
                     class="inline-flex items-center gap-x-2 rounded-lg bg-primary-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-600 focus:ring-offset-2">
                     <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                     </svg>
                     Add Task
-                </button>
+                </a>
             </div>
         </div>
 
@@ -126,7 +36,7 @@
                     class="px-4 py-2 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-50">
                     Overdue
                 </button>
-                <button onclick="filterTasks('completed')" id="filter-completed"
+                <button onclick="filterTasks('done')" id="filter-done"
                     class="px-4 py-2 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-50">
                     Completed
                 </button>
@@ -146,6 +56,7 @@
                             <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Subject
                             </th>
                             <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Title</th>
+                            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Type</th>
                             <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Due Date
                             </th>
                             <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Priority
@@ -157,47 +68,107 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200 bg-white" id="tasks-tbody">
-                        @foreach ($tasks as $task)
+                        @forelse ($tasks as $task)
                             @php
-                                $subject = collect($subjects)->firstWhere('id', $task['subject_id']);
-                                $status = $statusBadges[$task['status']];
-                                $priority = $priorityBadges[$task['priority']];
+                                $statusLabel = '';
+                                $statusClass = '';
+                                $dataStatus = '';
+
+                                if ($task->status == 'done') {
+                                    $statusLabel = 'Completed';
+                                    $statusClass = 'bg-green-100 text-green-800';
+                                    $dataStatus = 'done';
+                                } else {
+                                    $dueDate = \Carbon\Carbon::parse($task->due_date);
+                                    if ($dueDate->isPast() && !$dueDate->isToday()) {
+                                        $statusLabel = 'Overdue';
+                                        $statusClass = 'bg-red-100 text-red-800';
+                                        $dataStatus = 'overdue';
+                                    } elseif ($dueDate->isToday()) {
+                                        $statusLabel = 'Due Today';
+                                        $statusClass = 'bg-amber-100 text-amber-800';
+                                        $dataStatus = 'due_today';
+                                    } else {
+                                        $statusLabel = 'Upcoming';
+                                        $statusClass = 'bg-blue-100 text-blue-800';
+                                        $dataStatus = 'upcoming';
+                                    }
+                                }
+
+                                $priorityText = '';
+                                $priorityIcon = '';
+                                if ($task->priority == 'high') {
+                                    $priorityText = 'text-red-700';
+                                    $priorityIcon = '!!!';
+                                } elseif ($task->priority == 'medium') {
+                                    $priorityText = 'text-yellow-700';
+                                    $priorityIcon = '!!';
+                                } else {
+                                    $priorityText = 'text-gray-700';
+                                    $priorityIcon = '!';
+                                }
                             @endphp
-                            <tr class="hover:bg-gray-50 task-row" data-status="{{ $task['status'] }}">
+                            <tr class="hover:bg-gray-50 task-row" data-status="{{ $dataStatus }}">
                                 <td class="py-4 pl-6 pr-3">
-                                    <input type="checkbox" {{ $task['status'] == 'completed' ? 'checked' : '' }}
+                                    <input type="checkbox" {{ $task->status == 'done' ? 'checked' : '' }}
                                         class="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-600">
                                 </td>
                                 <td class="whitespace-nowrap px-3 py-4 text-sm">
                                     <div class="flex items-center gap-2">
-                                        <div class="{{ $subject['color'] }} h-8 w-1 rounded-full"></div>
-                                        <span class="font-medium text-gray-900">{{ $subject['code'] }}</span>
+                                        <div class="{{ $task->subject->color ?? 'bg-gray-500' }} h-8 w-1 rounded-full"></div>
+                                        <span class="font-medium text-gray-900">{{ $task->subject->code ?? 'N/A' }}</span>
                                     </div>
                                 </td>
                                 <td class="px-3 py-4 text-sm text-gray-900">
-                                    <div class="font-medium">{{ $task['title'] }}</div>
-                                    <div class="text-gray-500 mt-1">{{ $subject['name'] }}</div>
+                                    <div class="font-medium">{{ $task->title }}</div>
+                                    <div class="text-gray-500 mt-1">{{ $task->subject->name ?? 'No Subject' }}</div>
                                 </td>
                                 <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-600">
-                                    {{ date('d M Y', strtotime($task['due_date'])) }}
+                                    {{ $task->type }}
+                                </td>
+                                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-600">
+                                    {{ \Carbon\Carbon::parse($task->due_date)->format('d M Y') }}
                                 </td>
                                 <td class="whitespace-nowrap px-3 py-4 text-sm">
-                                    <span class="font-semibold {{ $priority['text'] }}">
-                                        {{ $priority['icon'] }}
+                                    <span class="font-semibold {{ $priorityText }}">
+                                        {{ $priorityIcon }}
                                     </span>
                                 </td>
                                 <td class="whitespace-nowrap px-3 py-4 text-sm">
                                     <span
-                                        class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium {{ $status['bg'] }} {{ $status['text'] }}">
-                                        {{ $status['label'] }}
+                                        class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium {{ $statusClass }}">
+                                        {{ $statusLabel }}
                                     </span>
                                 </td>
                                 <td class="relative whitespace-nowrap py-4 pl-3 pr-6 text-right text-sm">
-                                    <button class="text-primary-600 hover:text-primary-900 font-medium">Edit</button>
-                                    <button class="ml-4 text-red-600 hover:text-red-900 font-medium">Delete</button>
+                                    <a href="{{ route('tasks.edit', $task->id) }}" class="text-primary-600 hover:text-primary-900 font-medium">Edit</a>
+                                    <form action="{{ route('tasks.destroy', $task->id) }}" method="POST" class="inline-block ml-4">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" onclick="return confirm('Are you sure you want to delete this task?')" class="text-red-600 hover:text-red-900 font-medium">Delete</button>
+                                    </form>
                                 </td>
                             </tr>
-                        @endforeach
+                        @empty
+                            <tr>
+                                <td colspan="8" class="text-center py-12">
+                                    <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                        <path vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    <h3 class="mt-2 text-sm font-medium text-gray-900">No tasks found</h3>
+                                    <p class="mt-1 text-sm text-gray-500">Get started by creating a new task.</p>
+                                    <div class="mt-6">
+                                        <a href="{{ route('tasks.create') }}"
+                                            class="inline-flex items-center gap-x-2 rounded-lg bg-primary-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary-500">
+                                            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                                            </svg>
+                                            Add Task
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
@@ -209,7 +180,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm font-medium text-gray-600">Total Tasks</p>
-                        <p class="text-2xl font-bold text-gray-900 mt-2">{{ count($tasks) }}</p>
+                        <p class="text-2xl font-bold text-gray-900 mt-2">{{ $tasks->count() }}</p>
                     </div>
                     <div class="h-10 w-10 bg-gray-100 rounded-lg flex items-center justify-center">
                         <svg class="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -225,7 +196,7 @@
                     <div>
                         <p class="text-sm font-medium text-gray-600">Completed</p>
                         <p class="text-2xl font-bold text-green-600 mt-2">
-                            {{ collect($tasks)->where('status', 'completed')->count() }}</p>
+                            {{ $tasks->where('status', 'done')->count() }}</p>
                     </div>
                     <div class="h-10 w-10 bg-green-100 rounded-lg flex items-center justify-center">
                         <svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -240,7 +211,7 @@
                     <div>
                         <p class="text-sm font-medium text-gray-600">Overdue</p>
                         <p class="text-2xl font-bold text-red-600 mt-2">
-                            {{ collect($tasks)->where('status', 'overdue')->count() }}</p>
+                            {{ $tasks->filter(fn($t) => $t->status == 'doing' && \Carbon\Carbon::parse($t->due_date)->isPast())->count() }}</p>
                     </div>
                     <div class="h-10 w-10 bg-red-100 rounded-lg flex items-center justify-center">
                         <svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -256,7 +227,7 @@
                     <div>
                         <p class="text-sm font-medium text-gray-600">Due Today</p>
                         <p class="text-2xl font-bold text-amber-600 mt-2">
-                            {{ collect($tasks)->where('status', 'due_today')->count() }}</p>
+                            {{ $tasks->filter(fn($t) => $t->status == 'doing' && \Carbon\Carbon::parse($t->due_date)->isToday())->count() }}</p>
                     </div>
                     <div class="h-10 w-10 bg-amber-100 rounded-lg flex items-center justify-center">
                         <svg class="h-6 w-6 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">

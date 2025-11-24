@@ -49,21 +49,39 @@
                         class="w-full rounded-lg border border-gray-300 shadow-sm px-4 py-2 focus:border-primary-500 focus:ring-primary-500">{{ old('description', $task->description) }}</textarea>
                 </div>
 
-                <!-- Category Field -->
+                <!-- Subject Field -->
                 <div>
-                    <label for="category_id" class="block text-sm font-medium text-gray-700 mb-2">
-                        Category
+                    <label for="subject_id" class="block text-sm font-medium text-gray-700 mb-2">
+                        Subject
                     </label>
-                    <select id="category_id" name="category_id"
+                    <select id="subject_id" name="subject_id"
                         class="w-full rounded-lg border border-gray-300 shadow-sm px-4 py-2 focus:border-primary-500 focus:ring-primary-500">
-                        <option value="">-- Select Category --</option>
-                        @foreach ($categories as $category)
-                            <option value="{{ $category->id }}"
-                                {{ old('category_id', $task->category_id) == $category->id ? 'selected' : '' }}>
-                                {{ $category->name }}
+                        <option value="">-- Select Subject --</option>
+                        @foreach ($subjects as $subject)
+                            <option value="{{ $subject->id }}" {{ old('subject_id', $task->subject_id) == $subject->id ? 'selected' : '' }}>
+                                {{ $subject->name }} ({{ $subject->code }})
                             </option>
                         @endforeach
                     </select>
+                    @error('subject_id')
+                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- Type Field -->
+                <div>
+                    <label for="type" class="block text-sm font-medium text-gray-700 mb-2">
+                        Type <span class="text-red-500">*</span>
+                    </label>
+                    <select id="type" name="type" required
+                        class="w-full rounded-lg border {{ $errors->has('type') ? 'border-red-500' : 'border-gray-300' }} shadow-sm px-4 py-2 focus:border-primary-500 focus:ring-primary-500">
+                        <option value="quiz" {{ old('type', $task->type) == 'quiz' ? 'selected' : '' }}>Quiz</option>
+                        <option value="assignment" {{ old('type', $task->type) == 'assignment' ? 'selected' : '' }}>Assignment</option>
+                        <option value="project" {{ old('type', $task->type) == 'project' ? 'selected' : '' }}>Project</option>
+                    </select>
+                    @error('type')
+                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <!-- Due Date Field -->

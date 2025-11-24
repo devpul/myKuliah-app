@@ -21,7 +21,7 @@
                 <div class="p-6 space-y-6">
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Display Name</label>
-                        <input type="text" value="John Doe" disabled
+                        <input type="text" value="{{ auth()->user()->name }}" disabled
                             class="w-full rounded-lg border-gray-300 bg-gray-50 shadow-sm text-gray-500 cursor-not-allowed"
                             placeholder="Your display name">
                         <p class="mt-1 text-xs text-gray-500">This name will be displayed throughout the app</p>
@@ -29,7 +29,7 @@
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
-                        <input type="email" value="john.doe@university.edu" disabled
+                        <input type="email" value="{{ auth()->user()->email }}" disabled
                             class="w-full rounded-lg border-gray-300 bg-gray-50 shadow-sm text-gray-500 cursor-not-allowed"
                             placeholder="your@email.com">
                     </div>

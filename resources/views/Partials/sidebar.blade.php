@@ -33,7 +33,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('tasks') }}"
+                            <a href="{{ route('tasks.index') }}"
                                 class="group flex gap-x-3 rounded-lg p-3 text-sm leading-6 font-semibold {{ request()->is('tasks*') ? 'bg-primary-50 text-primary-600' : 'text-gray-700 hover:text-primary-600 hover:bg-gray-50' }}">
                                 <svg class="h-6 w-6 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -43,7 +43,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('exams') }}"
+                            <a href="{{ route('exams.index') }}"
                                 class="group flex gap-x-3 rounded-lg p-3 text-sm leading-6 font-semibold {{ request()->is('exams*') ? 'bg-primary-50 text-primary-600' : 'text-gray-700 hover:text-primary-600 hover:bg-gray-50' }}">
                                 <svg class="h-6 w-6 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -63,7 +63,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('subjects') }}"
+                            <a href="{{ route('subjects.index') }}"
                                 class="group flex gap-x-3 rounded-lg p-3 text-sm leading-6 font-semibold {{ request()->is('subjects*') ? 'bg-primary-50 text-primary-600' : 'text-gray-700 hover:text-primary-600 hover:bg-gray-50' }}">
                                 <svg class="h-6 w-6 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -140,7 +140,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('tasks') }}"
+                                    <a href="{{ route('tasks.index') }}"
                                         class="group flex gap-x-3 rounded-lg p-3 text-sm leading-6 font-semibold {{ request()->is('tasks*') ? 'bg-primary-50 text-primary-600' : 'text-gray-700 hover:text-primary-600 hover:bg-gray-50' }}">
                                         <svg class="h-6 w-6 shrink-0" fill="none" viewBox="0 0 24 24"
                                             stroke="currentColor">
@@ -151,7 +151,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('exams') }}"
+                                    <a href="{{ route('exams.index') }}"
                                         class="group flex gap-x-3 rounded-lg p-3 text-sm leading-6 font-semibold {{ request()->is('exams*') ? 'bg-primary-50 text-primary-600' : 'text-gray-700 hover:text-primary-600 hover:bg-gray-50' }}">
                                         <svg class="h-6 w-6 shrink-0" fill="none" viewBox="0 0 24 24"
                                             stroke="currentColor">
@@ -173,7 +173,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('subjects') }}"
+                                    <a href="{{ route('subjects.index') }}"
                                         class="group flex gap-x-3 rounded-lg p-3 text-sm leading-6 font-semibold {{ request()->is('subjects*') ? 'bg-primary-50 text-primary-600' : 'text-gray-700 hover:text-primary-600 hover:bg-gray-50' }}">
                                         <svg class="h-6 w-6 shrink-0" fill="none" viewBox="0 0 24 24"
                                             stroke="currentColor">

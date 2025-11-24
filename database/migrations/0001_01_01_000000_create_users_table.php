@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            
+
             // foreign key 1
             $table->unsignedBigInteger('role_id')->nullable();
             $table->foreign('role_id')
-                    ->references('id')->on('roles')
-                    ->onUpdate('cascade')
-                    ->onDelete('set null');
+                ->references('id')->on('roles')
+                ->onUpdate('cascade')
+                ->onDelete('set null');
             $table->string('mahasiswa_id')->unique();
             $table->string('name');
             $table->string('email')->unique();

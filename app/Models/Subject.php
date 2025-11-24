@@ -2,33 +2,39 @@
 
 namespace App\Models;
 
-use App\Models\Lecture;
-use App\Models\Schedule;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Subject extends Model
 {
+    use HasFactory;
+
     protected $table = 'subjects';
 
     protected $fillable = [
-        'lecture_id', // fk
-        'subject_name',
+        'code',
+        'name',
+        'lecture_name',
         'semester',
         'credits',
-        'description'
+        'room',
+        'color',
+        'description',
     ];
 
-    public $timestamps = false;
-
-    // provide
-    public function schedule()
+    /**
+     * Get the schedules for the subject.
+     */
+    public function schedules()
     {
-        $this->hasOne(Schedule::class, 'subject_id');
+        return $this->hasMany(Schedule::class);
     }
 
-    // belongs to 
-    public function subject()
+    /**
+     * Get the todolists for the subject.
+     */
+    public function todolists()
     {
-        $this->belongsTo(Lecture::class, 'lecture_id');
+        return $this->hasMany(Todolist::class);
     }
 }

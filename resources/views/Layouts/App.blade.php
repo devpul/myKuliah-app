@@ -50,10 +50,6 @@
         </div>
     </div>
 
-    <!-- Modals -->
-    @include('partials.modals.add-task')
-    @include('partials.modals.add-exam')
-    @include('partials.modals.add-subject')
 
     <script>
         // Mobile Sidebar Toggle

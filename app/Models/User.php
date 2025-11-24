@@ -6,6 +6,9 @@ namespace App\Models;
 use App\Models\Role;
 use App\Models\Document;
 use App\Models\ChatSession;
+use App\Models\Schedule;
+use App\Models\Todolist;
+use App\Models\Activity;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -29,9 +32,9 @@ class User extends Authenticatable
     public $timestamps = false;
 
     // provide
-    public function schedule()
+    public function schedules()
     {
-        $this->hasMany(Schedule::class, 'schedule_id');
+        return $this->hasMany(Schedule::class, 'user_id');
     }
 
     public function document()
@@ -41,7 +44,17 @@ class User extends Authenticatable
 
     public function chat_session()
     {
-        $this->hasOne(ChatSession::class, 'user_id');
+        return $this->hasOne(ChatSession::class, 'user_id');
+    }
+
+    public function todolists()
+    {
+        return $this->hasMany(Todolist::class);
+    }
+
+    public function activities()
+    {
+        return $this->hasMany(Activity::class);
     }
 
     // belongs to

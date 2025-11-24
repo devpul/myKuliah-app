@@ -3,57 +3,6 @@
 @section('title', 'Timetable - MyKuliah')
 
 @section('content')
-    @php
-        $subjects = [
-            [
-                'id' => 1,
-                'code' => 'CS101',
-                'name' => 'Algoritma & Pemrograman',
-                'color' => 'bg-blue-500',
-                'lecturer' => 'Dr. Ahmad Subagyo',
-            ],
-            [
-                'id' => 2,
-                'code' => 'MTK201',
-                'name' => 'Kalkulus II',
-                'color' => 'bg-green-500',
-                'lecturer' => 'Prof. Siti Nurhaliza',
-            ],
-            [
-                'id' => 3,
-                'code' => 'FIS101',
-                'name' => 'Fisika Dasar',
-                'color' => 'bg-purple-500',
-                'lecturer' => 'Dr. Budi Santoso',
-            ],
-            [
-                'id' => 4,
-                'code' => 'ENG102',
-                'name' => 'English for IT',
-                'color' => 'bg-yellow-500',
-                'lecturer' => 'Ms. Jessica Lee',
-            ],
-            [
-                'id' => 5,
-                'code' => 'DB201',
-                'name' => 'Basis Data',
-                'color' => 'bg-red-500',
-                'lecturer' => 'Dr. Rina Kusuma',
-            ],
-        ];
-
-        $classes = [
-            ['id' => 1, 'subject_id' => 1, 'day' => 1, 'start' => '08:00', 'end' => '10:00', 'room' => 'Lab 301'],
-            ['id' => 2, 'subject_id' => 2, 'day' => 1, 'start' => '10:30', 'end' => '12:00', 'room' => 'Ruang 204'],
-            ['id' => 3, 'subject_id' => 3, 'day' => 2, 'start' => '08:00', 'end' => '09:30', 'room' => 'Lab Fisika'],
-            ['id' => 4, 'subject_id' => 4, 'day' => 2, 'start' => '13:00', 'end' => '14:30', 'room' => 'Ruang 105'],
-            ['id' => 5, 'subject_id' => 5, 'day' => 3, 'start' => '08:00', 'end' => '10:00', 'room' => 'Lab 302'],
-            ['id' => 6, 'subject_id' => 1, 'day' => 3, 'start' => '13:00', 'end' => '15:00', 'room' => 'Lab 301'],
-            ['id' => 7, 'subject_id' => 2, 'day' => 4, 'start' => '10:00', 'end' => '12:00', 'room' => 'Ruang 204'],
-            ['id' => 8, 'subject_id' => 3, 'day' => 5, 'start' => '08:00', 'end' => '09:30', 'room' => 'Lab Fisika'],
-        ];
-    @endphp
-
     <div class="px-4 sm:px-6 lg:px-8">
         <!-- Header -->
         <div class="sm:flex sm:items-center sm:justify-between mb-6">
@@ -79,15 +28,15 @@
 
         <!-- View Containers -->
         <div id="view-day" class="hidden">
-            @include('timetable._view-day', ['classes' => $classes, 'subjects' => $subjects])
+            @include('timetable._view-day', ['schedules' => $schedules, 'subjects' => $subjects])
         </div>
 
         <div id="view-week" class="block">
-            @include('timetable._view-week', ['classes' => $classes, 'subjects' => $subjects])
+            @include('timetable._view-week', ['schedules' => $schedules, 'subjects' => $subjects])
         </div>
 
         <div id="view-month" class="hidden">
-            @include('timetable._view-month', ['classes' => $classes, 'subjects' => $subjects])
+            @include('timetable._view-month', ['schedules' => $schedules, 'subjects' => $subjects])
         </div>
     </div>
 @endsection

@@ -3,75 +3,12 @@
 @section('title', 'Dashboard - MyKuliah')
 
 @section('content')
-    @php
-        $subjects = [
-            [
-                'id' => 1,
-                'code' => 'CS101',
-                'name' => 'Algoritma & Pemrograman',
-                'color' => 'bg-blue-500',
-                'lecturer' => 'Dr. Ahmad Subagyo',
-            ],
-            [
-                'id' => 2,
-                'code' => 'MTK201',
-                'name' => 'Kalkulus II',
-                'color' => 'bg-green-500',
-                'lecturer' => 'Prof. Siti Nurhaliza',
-            ],
-            [
-                'id' => 3,
-                'code' => 'FIS101',
-                'name' => 'Fisika Dasar',
-                'color' => 'bg-purple-500',
-                'lecturer' => 'Dr. Budi Santoso',
-            ],
-            [
-                'id' => 4,
-                'code' => 'ENG102',
-                'name' => 'English for IT',
-                'color' => 'bg-yellow-500',
-                'lecturer' => 'Ms. Jessica Lee',
-            ],
-            [
-                'id' => 5,
-                'code' => 'DB201',
-                'name' => 'Basis Data',
-                'color' => 'bg-red-500',
-                'lecturer' => 'Dr. Rina Kusuma',
-            ],
-        ];
-
-        $todayClasses = [
-            ['subject_id' => 1, 'start' => '08:00', 'end' => '10:00', 'room' => 'Lab 301'],
-            ['subject_id' => 2, 'start' => '10:30', 'end' => '12:00', 'room' => 'Ruang 204'],
-        ];
-
-        $upcomingTasks = [
-            ['title' => 'Tugas Algoritma Sorting', 'subject_id' => 1, 'due' => '2025-11-10', 'status' => 'due_today'],
-            ['title' => 'Latihan Integral', 'subject_id' => 2, 'due' => '2025-11-08', 'status' => 'overdue'],
-            ['title' => 'Lab Report Mekanika', 'subject_id' => 3, 'due' => '2025-11-15', 'status' => 'scheduled'],
-            ['title' => 'Essay Technology Impact', 'subject_id' => 4, 'due' => '2025-11-12', 'status' => 'scheduled'],
-            ['title' => 'Project ERD Design', 'subject_id' => 5, 'due' => '2025-11-18', 'status' => 'scheduled'],
-        ];
-
-        $nextExams = [
-            ['subject_id' => 1, 'date' => '2025-11-20', 'room' => 'Lab 301'],
-            ['subject_id' => 2, 'date' => '2025-11-22', 'room' => 'Ruang 204'],
-            ['subject_id' => 3, 'date' => '2025-11-25', 'room' => 'Lab Fisika'],
-        ];
-
-        $completedTasks = 3;
-        $totalTasks = 5;
-        $progressPercentage = ($completedTasks / $totalTasks) * 100;
-    @endphp
-
     <div class="px-4 sm:px-6 lg:px-8">
         <!-- Header -->
         <div class="sm:flex sm:items-center sm:justify-between mb-6">
             <div>
                 <h1 class="text-2xl font-bold text-gray-900">Dashboard</h1>
-                <p class="mt-2 text-sm text-gray-700">Senin, 10 November 2025</p>
+                <p class="mt-2 text-sm text-gray-700">{{ \Carbon\Carbon::now()->format('l, d F Y') }}</p>
             </div>
         </div>
 
@@ -95,7 +32,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm font-medium text-gray-600">Classes Today</p>
-                        <p class="text-3xl font-bold text-gray-900 mt-1">{{ count($todayClasses) }}</p>
+                        <p class="text-3xl font-bold text-gray-900 mt-1">{{ $todayClasses->count() }}</p>
                     </div>
                     <div class="h-12 w-12 bg-blue-100 rounded-lg flex items-center justify-center">
                         <svg class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -111,7 +48,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm font-medium text-gray-600">Upcoming Exams</p>
-                        <p class="text-3xl font-bold text-gray-900 mt-1">{{ count($nextExams) }}</p>
+                        <p class="text-3xl font-bold text-gray-900 mt-1">{{ $nextExams->count() }}</p>
                     </div>
                     <div class="h-12 w-12 bg-red-100 rounded-lg flex items-center justify-center">
                         <svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -132,17 +69,17 @@
                 </div>
                 <div class="p-6 space-y-4">
                     @forelse($todayClasses as $class)
-                        @php
-                            $subject = collect($subjects)->firstWhere('id', $class['subject_id']);
-                        @endphp
                         <div class="flex items-start gap-4 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
-                            <div class="{{ $subject['color'] }} h-12 w-1 rounded-full"></div>
+                            <div class="{{ $class->subject->color ?? 'bg-gray-500' }} h-12 w-1 rounded-full"></div>
                             <div class="flex-1">
-                                <h4 class="font-semibold text-gray-900">{{ $subject['name'] }}</h4>
-                                <p class="text-sm text-gray-600 mt-1">{{ $class['start'] }} - {{ $class['end'] }}</p>
-                                <p class="text-sm text-gray-500">{{ $class['room'] }} • {{ $subject['lecturer'] }}</p>
+                                <h4 class="font-semibold text-gray-900">{{ $class->subject->name }}</h4>
+                                <p class="text-sm text-gray-600 mt-1">
+                                    {{ \Carbon\Carbon::parse($class->start_time)->format('H:i') }} -
+                                    {{ \Carbon\Carbon::parse($class->end_time)->format('H:i') }}</p>
+                                <p class="text-sm text-gray-500">{{ $class->room }} •
+                                    {{ $class->subject->lecture_name ?? 'N/A' }}</p>
                             </div>
-                            <span class="text-xs font-medium text-gray-500">{{ $subject['code'] }}</span>
+                            <span class="text-xs font-medium text-gray-500">{{ $class->subject->code }}</span>
                         </div>
                     @empty
                         <div class="text-center py-12">
@@ -161,31 +98,47 @@
             <div class="bg-white rounded-2xl shadow-sm border border-gray-200">
                 <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
                     <h3 class="text-lg font-semibold text-gray-900">Upcoming Tasks</h3>
-                    <a href="{{ route('tasks') }}" class="text-sm font-medium text-primary-600 hover:text-primary-700">View
-                        all</a>
+                    <a href="{{ route('tasks.index') }}"
+                        class="text-sm font-medium text-primary-600 hover:text-primary-700">View all</a>
                 </div>
                 <div class="p-6 space-y-3">
-                    @foreach ($upcomingTasks as $task)
+                    @forelse ($upcomingTasks as $task)
                         @php
-                            $subject = collect($subjects)->firstWhere('id', $task['subject_id']);
-                            $statusBadges = [
-                                'overdue' =>
-                                    '<span class="px-2 py-1 text-xs font-medium rounded-full bg-red-100 text-red-800">Overdue</span>',
-                                'due_today' =>
-                                    '<span class="px-2 py-1 text-xs font-medium rounded-full bg-amber-100 text-amber-800">Due Today</span>',
-                                'scheduled' =>
-                                    '<span class="px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800">Scheduled</span>',
-                            ];
+                            $dueDate = \Carbon\Carbon::parse($task->due_date);
+                            $isOverdue = $dueDate->isPast() && !$dueDate->isToday();
+                            $isDueToday = $dueDate->isToday();
+
+                            $statusClass = 'bg-blue-100 text-blue-800';
+                            $statusText = 'Scheduled';
+                            if ($isOverdue) {
+                                $statusClass = 'bg-red-100 text-red-800';
+                                $statusText = 'Overdue';
+                            } elseif ($isDueToday) {
+                                $statusClass = 'bg-amber-100 text-amber-800';
+                                $statusText = 'Due Today';
+                            }
                         @endphp
                         <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                            <div class="{{ $subject['color'] }} h-8 w-1 rounded-full"></div>
+                            <div class="{{ $task->subject->color ?? 'bg-gray-500' }} h-8 w-1 rounded-full"></div>
                             <div class="flex-1 min-w-0">
-                                <p class="font-medium text-gray-900 truncate">{{ $task['title'] }}</p>
-                                <p class="text-sm text-gray-600">{{ $subject['code'] }} • {{ $task['due'] }}</p>
+                                <p class="font-medium text-gray-900 truncate">{{ $task->title }}</p>
+                                <p class="text-sm text-gray-600">
+                                    {{ $task->type }} • {{ $task->subject->name ?? 'N/A' }} •
+                                    {{ $dueDate->format('d M Y') }}</p>
                             </div>
-                            {!! $statusBadges[$task['status']] !!}
+                            <span
+                                class="px-2 py-1 text-xs font-medium rounded-full {{ $statusClass }}">{{ $statusText }}</span>
                         </div>
-                    @endforeach
+                    @empty
+                        <div class="text-center py-8">
+                            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor" aria-hidden="true">
+                                <path vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <p class="mt-2 text-sm text-gray-500">No upcoming tasks. You're all clear!</p>
+                        </div>
+                    @endforelse
                 </div>
             </div>
         </div>
@@ -194,28 +147,43 @@
         <div class="mt-6 bg-white rounded-2xl shadow-sm border border-gray-200">
             <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
                 <h3 class="text-lg font-semibold text-gray-900">Next Exams</h3>
-                <a href="{{ route('exams') }}" class="text-sm font-medium text-primary-600 hover:text-primary-700">View
-                    all</a>
+                <a href="{{ route('exams.index') }}"
+                    class="text-sm font-medium text-primary-600 hover:text-primary-700">View all</a>
             </div>
             <div class="p-6">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    @foreach ($nextExams as $exam)
+                    @forelse ($nextExams as $exam)
                         @php
-                            $subject = collect($subjects)->firstWhere('id', $exam['subject_id']);
-                            $today = strtotime('2025-11-10');
-                            $examDate = strtotime($exam['date']);
-                            $daysUntil = floor(($examDate - $today) / (60 * 60 * 24));
+                            $examDate = \Carbon\Carbon::parse($exam->due_date);
+                            $daysUntil = \Carbon\Carbon::now()->diffInDays($examDate, false);
                         @endphp
-                        <div class="p-4 bg-gray-50 rounded-xl border-l-4 {{ $subject['color'] }}">
+                        <div class="p-4 bg-gray-50 rounded-xl border-l-4 {{ $exam->subject->color ?? 'border-gray-500' }}">
                             <div class="flex items-start justify-between mb-2">
-                                <h4 class="font-semibold text-gray-900">{{ $subject['name'] }}</h4>
-                                <span
-                                    class="text-xs font-medium px-2 py-1 bg-white rounded-full text-gray-600">H-{{ $daysUntil }}</span>
+                                <h4 class="font-semibold text-gray-900">{{ $exam->subject->name ?? 'N/A' }}</h4>
+                                <span class="text-xs font-medium px-2 py-1 bg-white rounded-full text-gray-600">
+                                    @if ($daysUntil < 0)
+                                        Passed
+                                    @elseif($daysUntil == 0)
+                                        Today
+                                    @else
+                                        H-{{ $daysUntil }}
+                                    @endif
+                                </span>
                             </div>
-                            <p class="text-sm text-gray-600">{{ $subject['code'] }}</p>
-                            <p class="text-sm text-gray-500 mt-2">{{ date('d M Y', $examDate) }} • {{ $exam['room'] }}</p>
+                            <p class="text-sm text-gray-600">{{ $exam->subject->code ?? 'N/A' }}</p>
+                            <p class="text-sm text-gray-500 mt-2">{{ $examDate->format('d M Y') }} •
+                                {{ $exam->room ?? 'N/A' }}</p>
                         </div>
-                    @endforeach
+                    @empty
+                        <div class="md:col-span-3 text-center py-8">
+                            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor" aria-hidden="true">
+                                <path vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <p class="mt-2 text-sm text-gray-500">No upcoming exams. Keep up the good work!</p>
+                        </div>
+                    @endforelse
                 </div>
             </div>
         </div>

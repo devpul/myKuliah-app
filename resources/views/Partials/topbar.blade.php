@@ -90,11 +90,11 @@
                     <span class="sr-only">Open user menu</span>
                     <div
                         class="h-8 w-8 rounded-full bg-primary-600 flex items-center justify-center text-white font-semibold text-sm">
-                        JD
+                        {{ strtoupper(substr(auth()->user()->name, 0, 2)) }}
                     </div>
                     <span class="hidden lg:flex lg:items-center">
-                        <span class="ml-3 text-sm font-semibold leading-6 text-gray-900" aria-hidden="true">John
-                            Doe</span>
+                        <span class="ml-3 text-sm font-semibold leading-6 text-gray-900" aria-hidden="true">{{ auth()->user()->name }}
+                            </span>
                         <svg class="ml-2 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd"
                                 d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
@@ -110,8 +110,12 @@
                     <a href="{{ route('settings') }}"
                         class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Settings</a>
                     <hr class="my-2">
-                    <a href="{{ route('login') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Sign
-                        out</a>
+                    <form action="{{ route('logout') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                            Sign out
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>

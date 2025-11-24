@@ -4,63 +4,6 @@
 
 @section('content')
     @php
-        $activities = [
-            [
-                'id' => 1,
-                'name' => 'Rapat BEM',
-                'category' => 'organization',
-                'date' => '2025-11-11',
-                'time' => '16:00',
-                'location' => 'Aula Utama',
-                'description' => 'Rapat koordinasi program kerja semester ini',
-            ],
-            [
-                'id' => 2,
-                'name' => 'Latihan Basket',
-                'category' => 'sport',
-                'date' => '2025-11-12',
-                'time' => '17:00',
-                'location' => 'GOR Kampus',
-                'description' => 'Latihan rutin tim basket kampus',
-            ],
-            [
-                'id' => 3,
-                'name' => 'Part-time Coding',
-                'category' => 'work',
-                'date' => '2025-11-13',
-                'time' => '14:00',
-                'location' => 'Remote',
-                'description' => 'Freelance web development project',
-            ],
-            [
-                'id' => 4,
-                'name' => 'Seminar AI',
-                'category' => 'seminar',
-                'date' => '2025-11-15',
-                'time' => '09:00',
-                'location' => 'Auditorium',
-                'description' => 'Guest lecture tentang AI dan Machine Learning',
-            ],
-            [
-                'id' => 5,
-                'name' => 'Volunteer Teaching',
-                'category' => 'volunteer',
-                'date' => '2025-11-16',
-                'time' => '13:00',
-                'location' => 'SD Harapan',
-                'description' => 'Mengajar programming untuk anak-anak',
-            ],
-            [
-                'id' => 6,
-                'name' => 'Badminton Tournament',
-                'category' => 'sport',
-                'date' => '2025-11-18',
-                'time' => '08:00',
-                'location' => 'GOR Kampus',
-                'description' => 'Turnamen badminton antar fakultas',
-            ],
-        ];
-
         $categoryConfig = [
             'organization' => [
                 'icon' =>
@@ -129,16 +72,15 @@
 
         <!-- Activities Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            @foreach ($activities as $activity)
+            @forelse ($activities as $activity)
                 @php
-                    $config = $categoryConfig[$activity['category']];
-                    $activityDate = strtotime($activity['date']);
-                    $currentDate = strtotime('2025-11-10');
-                    $daysUntil = floor(($activityDate - $currentDate) / (60 * 60 * 24));
+                    $config = $categoryConfig[$activity->category] ?? ['icon' => '', 'color' => 'bg-gray-400', 'label' => 'Unknown'];
+                    $activityDate = \Carbon\Carbon::parse($activity->date);
+                    $daysUntil = $activityDate->diffInDays($currentDate, false);
                 @endphp
 
                 <div class="activity-card bg-white rounded-2xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow overflow-hidden"
-                    data-category="{{ $activity['category'] }}">
+                    data-category="{{ $activity->category }}">
                     <div class="{{ $config['color'] }} h-2"></div>
                     <div class="p-6">
                         <div class="flex items-start gap-4 mb-4">
@@ -150,7 +92,7 @@
                                 </svg>
                             </div>
                             <div class="flex-1">
-                                <h3 class="text-lg font-semibold text-gray-900">{{ $activity['name'] }}</h3>
+                                <h3 class="text-lg font-semibold text-gray-900">{{ $activity->name }}</h3>
                                 <span
                                     class="inline-flex items-center mt-1 px-2.5 py-0.5 rounded-full text-xs font-medium {{ $config['color'] }} bg-opacity-10 text-gray-900">
                                     {{ $config['label'] }}
@@ -158,7 +100,7 @@
                             </div>
                         </div>
 
-                        <p class="text-sm text-gray-600 mb-4 line-clamp-2">{{ $activity['description'] }}</p>
+                        <p class="text-sm text-gray-600 mb-4 line-clamp-2">{{ $activity->description }}</p>
 
                         <div class="space-y-2">
                             <div class="flex items-center gap-2 text-sm text-gray-700">
@@ -166,7 +108,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                 </svg>
-                                {{ date('d M Y', $activityDate) }} • {{ $activity['time'] }}
+                                {{ \Carbon\Carbon::parse($activity->date)->format('d M Y') }} • {{ $activity->time }}
                             </div>
                             <div class="flex items-center gap-2 text-sm text-gray-700">
                                 <svg class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -175,7 +117,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                                 </svg>
-                                {{ $activity['location'] }}
+                                {{ $activity->location }}
                             </div>
                         </div>
 
@@ -210,14 +152,30 @@
                         @endif
                     </div>
                 </div>
-            @endforeach
+            @empty
+                <div class="md:col-span-3 text-center py-12 bg-white rounded-2xl shadow-sm border border-gray-200">
+                    <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <h3 class="mt-2 text-sm font-medium text-gray-900">No extra activities found</h3>
+                    <p class="mt-1 text-sm text-gray-500">Get started by adding a new activity.</p>
+                    <div class="mt-6">
+                        <button class="inline-flex items-center gap-x-2 rounded-lg bg-primary-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary-500">
+                            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                            </svg>
+                            Add Activity
+                        </button>
+                    </div>
+                </div>
+            @endforelse
         </div>
 
         <!-- Stats Summary -->
         <div class="mt-8 grid grid-cols-2 md:grid-cols-5 gap-4">
             @foreach ($categoryConfig as $key => $config)
                 @php
-                    $count = collect($activities)->where('category', $key)->count();
+                    $count = $activities->where('category', $key)->count();
                 @endphp
                 <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
                     <div class="flex items-center gap-3">

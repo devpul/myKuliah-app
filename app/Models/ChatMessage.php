@@ -2,25 +2,30 @@
 
 namespace App\Models;
 
-use App\Models\ChatSession;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class ChatMessage extends Model
 {
+    use HasFactory;
+
     protected $table = 'chat_messages';
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = [
-        'name',
-        'session_id', //fk
-        'sender_type', //enum
-        'message',
-        // timestamp
+        'session_id',
+        // 'message' // This column seems to be missing in the migration
     ];
 
-    public $timestamps = false;
-
-    public function chat_session()
+    /**
+     * Get the chat session that owns the message.
+     */
+    public function session()
     {
-        $this->belongsTo(ChatSession::class, 'session_id');
+        return $this->belongsTo(ChatSession::class, 'session_id');
     }
 }

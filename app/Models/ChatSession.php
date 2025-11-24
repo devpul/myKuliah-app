@@ -2,29 +2,34 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class ChatSession extends Model
 {
+    use HasFactory;
+
     protected $table = 'chat_sessions';
+
+    public $timestamps = false;
 
     protected $fillable = [
         'user_id',
-        'title',
-        // 'created_at' // timestamp
     ];
 
-    public const UPDATED_AT = null;
-
-    // provide
-    public function chat_message()
-    {
-        $this->hasMany(ChatMessage::class, 'session_id');
-    }
-
-    // belongs to
+    /**
+     * Get the user that owns the chat session.
+     */
     public function user()
     {
-        $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get the messages for the chat session.
+     */
+    public function messages()
+    {
+        return $this->hasMany(ChatMessage::class, 'session_id');
     }
 }

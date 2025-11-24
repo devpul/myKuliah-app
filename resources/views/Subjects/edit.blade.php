@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Create Subject - MyKuliah')
+@section('title', 'Edit Subject - MyKuliah')
 
 @section('content')
     <div class="px-4 sm:px-6 lg:px-8 mx-auto">
@@ -11,7 +11,7 @@
         </div>
 
         <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
-            <h1 class="text-2xl font-bold text-gray-900 mb-6">Create New Subject</h1>
+            <h1 class="text-2xl font-bold text-gray-900 mb-6">Edit Subject</h1>
 
             @if ($errors->any())
                 <div class="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
@@ -24,15 +24,16 @@
                 </div>
             @endif
 
-            <form action="{{ route('subjects.store') }}" method="POST" class="space-y-6">
+            <form action="{{ route('subjects.update', $subject->id) }}" method="POST" class="space-y-6">
                 @csrf
+                @method('PUT')
 
                 <!-- Subject Name -->
                 <div>
                     <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
                         Subject Name <span class="text-red-500">*</span>
                     </label>
-                    <input type="text" id="name" name="name" value="{{ old('name') }}" required
+                    <input type="text" id="name" name="name" value="{{ old('name', $subject->name) }}" required
                         class="w-full rounded-lg border {{ $errors->has('name') ? 'border-red-500' : 'border-gray-300' }} shadow-sm px-4 py-2 focus:border-primary-500 focus:ring-primary-500"
                         placeholder="e.g., Algoritma & Pemrograman">
                     @error('name')
@@ -46,7 +47,7 @@
                         <label for="code" class="block text-sm font-medium text-gray-700 mb-2">
                             Code <span class="text-red-500">*</span>
                         </label>
-                        <input type="text" id="code" name="code" value="{{ old('code') }}" required
+                        <input type="text" id="code" name="code" value="{{ old('code', $subject->code) }}" required
                             class="w-full rounded-lg border {{ $errors->has('code') ? 'border-red-500' : 'border-gray-300' }} shadow-sm px-4 py-2 focus:border-primary-500 focus:ring-primary-500"
                             placeholder="e.g., CS101">
                         @error('code')
@@ -59,7 +60,7 @@
                         <label for="room" class="block text-sm font-medium text-gray-700 mb-2">
                             Room
                         </label>
-                        <input type="text" id="room" name="room" value="{{ old('room') }}"
+                        <input type="text" id="room" name="room" value="{{ old('room', $subject->room) }}"
                             class="w-full rounded-lg border {{ $errors->has('room') ? 'border-red-500' : 'border-gray-300' }} shadow-sm px-4 py-2 focus:border-primary-500 focus:ring-primary-500"
                             placeholder="e.g., Room 101">
                         @error('room')
@@ -78,7 +79,7 @@
                             class="w-full rounded-lg border {{ $errors->has('semester') ? 'border-red-500' : 'border-gray-300' }} shadow-sm px-4 py-2 focus:border-primary-500 focus:ring-primary-500">
                             <option value="">-- Select --</option>
                             @for ($i = 1; $i <= 8; $i++)
-                                <option value="{{ $i }}" {{ old('semester') == $i ? 'selected' : '' }}>
+                                <option value="{{ $i }}" {{ old('semester', $subject->semester) == $i ? 'selected' : '' }}>
                                     Semester {{ $i }}
                                 </option>
                             @endfor
@@ -93,7 +94,7 @@
                         <label for="credits" class="block text-sm font-medium text-gray-700 mb-2">
                             Credits (SKS) <span class="text-red-500">*</span>
                         </label>
-                        <input type="number" id="credits" name="credits" value="{{ old('credits') }}" required
+                        <input type="number" id="credits" name="credits" value="{{ old('credits', $subject->credits) }}" required
                             min="1" max="10"
                             class="w-full rounded-lg border {{ $errors->has('credits') ? 'border-red-500' : 'border-gray-300' }} shadow-sm px-4 py-2 focus:border-primary-500 focus:ring-primary-500">
                         @error('credits')
@@ -124,7 +125,7 @@
                             'bg-gray-500' => 'Gray',
                         ] as $class => $name)
                             <label class="relative">
-                                <input type="radio" name="color" value="{{ $class }}" class="sr-only peer" {{ old('color') == $class ? 'checked' : '' }}>
+                                <input type="radio" name="color" value="{{ $class }}" class="sr-only peer" {{ old('color', $subject->color) == $class ? 'checked' : '' }}>
                                 <div class="w-8 h-8 rounded-full {{ $class }} cursor-pointer ring-2 ring-transparent peer-checked:ring-offset-2 peer-checked:ring-primary-500 peer-checked:border-white"></div>
                                 <div class="absolute bottom-full mb-2 hidden peer-hover:block px-2 py-1 bg-gray-700 text-white text-xs rounded-md">
                                     {{ $name }}
@@ -142,7 +143,7 @@
                     <label for="lecture_name" class="block text-sm font-medium text-gray-700 mb-2">
                         Lecturer Name
                     </label>
-                    <input type="text" id="lecture_name" name="lecture_name" value="{{ old('lecture_name') }}"
+                    <input type="text" id="lecture_name" name="lecture_name" value="{{ old('lecture_name', $subject->lecture_name) }}"
                         class="w-full rounded-lg border {{ $errors->has('lecture_name') ? 'border-red-500' : 'border-gray-300' }} shadow-sm px-4 py-2 focus:border-primary-500 focus:ring-primary-500"
                         placeholder="e.g., Dr. Jane Doe">
                     @error('lecture_name')
@@ -157,14 +158,14 @@
                     </label>
                     <textarea id="description" name="description" rows="4"
                         class="w-full rounded-lg border border-gray-300 shadow-sm px-4 py-2 focus:border-primary-500 focus:ring-primary-500"
-                        placeholder="Add course description...">{{ old('description') }}</textarea>
+                        placeholder="Add course description...">{{ old('description', $subject->description) }}</textarea>
                 </div>
 
                 <!-- Form Actions -->
                 <div class="flex gap-3 pt-6 border-t border-gray-200">
                     <button type="submit"
                         class="flex-1 bg-primary-600 text-white rounded-lg px-4 py-2 font-medium hover:bg-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-600">
-                        Create Subject
+                        Update Subject
                     </button>
                     <a href="{{ route('subjects.index') }}"
                         class="flex-1 bg-gray-100 text-gray-700 rounded-lg px-4 py-2 font-medium hover:bg-gray-200 text-center">
