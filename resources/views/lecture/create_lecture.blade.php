@@ -11,33 +11,13 @@
 
         <div id="input-group" class="flex flex-col gap-y-5">
             <div class="input-group flex flex-col gap-y-2">
-                <label>Kode Matkul</label>
+                <label>Nama Pengajar</label>
                 <input type="text" name="subject_code[]" minlength="3" maxlength="8" class="border" required>
             </div>
             
             <div class="input-group flex flex-col gap-y-2">
                 <label>Mata Kuliah</label>
                 <input type="text" name="subject_name[]" class="border" required>
-            </div>
-            
-            <div class="input-group flex flex-col gap-y-2">
-                <label>Semester</label>
-                <input type="number" name="semester[]" max="8" min="1" class="border" required>
-            </div>
-            
-            <div class="input-group flex flex-col gap-y-2">
-                <label>SKS</label>
-                <input type="number" name="credits[]" max="5" min="1" class="border p-1" required>
-            </div>
-            
-            <div class="input-group flex flex-col gap-y-2">
-                <label>Deksripsi</label>
-                <textarea name="description[]" class="border"></textarea>
-            </div>
-            
-            <div class="input-group flex flex-col gap-y-2">
-                <label>Warna</label>
-                <input type="color" name="color[]" class="border" required>
             </div>
         </div>
         <div id="sini"></div>
@@ -58,7 +38,7 @@
             }
 
             const clone = inputGroup.cloneNode(true);
-            clone.querySelectorAll('input, textarea').foreach(function(e) {
+            clone.querySelectorAll('input, textarea').forEach(function(e) {
                 e.value = "";
             });
 
