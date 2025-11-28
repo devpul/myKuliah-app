@@ -79,9 +79,10 @@
         <!-- Subjects Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             @forelse ($subjects as $subject)
-                <div
-                    class="bg-white rounded-2xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow overflow-hidden">
+                <div 
+                    class="hover-card bg-white rounded-2xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow overflow-hidden">
                     <div class="{{ $subject->color ?? 'bg-gray-400' }} h-3"></div>
+                    <a href="{{ route('subjects.detail', $subject->id) }}">
                     <div class="p-6">
                         <div class="flex items-start justify-between mb-4">
                             <div class="flex-1">
@@ -153,6 +154,7 @@
                             </div>
                         </div>
                     </div>
+                    </a>
                 </div>
             @empty
                 <div class="md:col-span-3 text-center py-12 bg-white rounded-2xl shadow-sm border border-gray-200">
@@ -174,4 +176,21 @@
             @endforelse
         </div>
     </div>
+
+
+    <script>
+    const hoverCard = document.querySelectorAll('.hover-card');
+
+    hoverCard.forEach(card => {
+        const originalText = card.innerHTML;
+
+        card.addEventListener('mouseover', function () {
+            card.style.opacity = 0.5;
+        });
+
+        card.addEventListener('mouseout', function () {
+            card.style.opacity = 1;
+        });
+    });
+</script>
 @endsection

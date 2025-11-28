@@ -1,13 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\Auth\GoogleController;
+use App\Http\Controllers\Xtra\ActivityController;
+use App\Http\Controllers\Chatbot\ChatbotController;
 use App\Http\Controllers\Subjects\SubjectController;
 use App\Http\Controllers\Todolists\TodolistController;
+use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Timetable\TimetableController;
-use App\Http\Controllers\Xtra\ActivityController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,6 +42,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/subjects/{subject}/edit', [SubjectController::class, 'edit'])->name('subjects.edit');
     Route::put('/subjects/{subject}', [SubjectController::class, 'update'])->name('subjects.update');
     Route::delete('/subjects/{subject}', [SubjectController::class, 'destroy'])->name('subjects.destroy');
+    Route::get('/subjects/{subject}/detail', [SubjectController::class, 'detail'])->name('subjects.detail');
+    Route::get('/subjects/{subject}/pertemuan', [SubjectController::class, 'pertemuan'])->name('subject.pertemuan');
+
 
     // Using `tasks.index` to match usage in other files.
     // The sidebar link will need to be updated from `tasks` to `tasks.index`.
@@ -61,4 +65,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/xtra', [ActivityController::class, 'index'])->name('xtra');
 
     Route::view('/settings', 'settings.index')->name('settings');
+
+    Route::get('/chatbot', [ChatbotController::class, 'index'])->name('chatbot.index');
+    Route::post('/chatbot-get', [ChatbotController::class, 'chat'])->name('chatbot.get');
+
+
 });

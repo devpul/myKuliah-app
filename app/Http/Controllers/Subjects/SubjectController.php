@@ -93,4 +93,18 @@ class SubjectController extends Controller
 
         return redirect()->route('subjects.index')->with('success', 'Subject deleted successfully.');
     }
+
+    public function detail($id)
+    {
+        $subject = Subject::find($id);
+        
+        return view('subjects.detail', ['subject' => $subject]);
+    }
+
+    public function pertemuan($id)
+    {
+        $subject = Subject::find($id);
+        
+        return view('Subjects.pertemuan', ['subject' => $subject]);
+    }
 }

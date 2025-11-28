@@ -27,7 +27,7 @@
             <form action="{{ route('exams.store') }}" method="POST" class="space-y-6">
                 @csrf
                 <input type="hidden" name="category_id" value="{{ $examsCategory->id }}">
-                <input type="hidden" name="type" value="exam">
+                <input type="hidden" name="type">
 
                 <!-- Title Field -->
                 <div>

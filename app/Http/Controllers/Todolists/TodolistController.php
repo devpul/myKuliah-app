@@ -165,10 +165,12 @@ class TodolistController extends Controller
      */
     public function storeExam(Request $request)
     {
+        
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'subject_id' => 'nullable|exists:subjects,id',
+            'type' => 'nullable|in:quiz,assignment,project',
             'due_date' => 'required|date',
             'time' => 'nullable|date_format:H:i',
             'room' => 'nullable|string|max:255',
@@ -178,7 +180,7 @@ class TodolistController extends Controller
         ]);
 
         $validated['user_id'] = Auth::id();
-        $validated['type'] = 'exam';
+        $validated['type'] = null;
 
         Todolist::create($validated);
 
@@ -218,7 +220,7 @@ class TodolistController extends Controller
             'status' => 'required|in:doing,done',
         ]);
 
-        $validated['type'] = 'exam';
+        $validated['type'] = null;
 
         $exam->update($validated);
 
