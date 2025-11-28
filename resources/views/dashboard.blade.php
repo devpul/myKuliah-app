@@ -144,47 +144,75 @@
         </div>
 
         <!-- Next Exams Section -->
-        <div class="mt-6 bg-white rounded-2xl shadow-sm border border-gray-200">
-            <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+        <div class="mt-6">
+            <div class="flex items-center justify-between mb-4">
                 <h3 class="text-lg font-semibold text-gray-900">Next Exams</h3>
                 <a href="{{ route('exams.index') }}"
                     class="text-sm font-medium text-primary-600 hover:text-primary-700">View all</a>
             </div>
-            <div class="p-6">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    @forelse ($nextExams as $exam)
-                        @php
-                            $examDate = \Carbon\Carbon::parse($exam->due_date);
-                            $daysUntil = \Carbon\Carbon::now()->diffInDays($examDate, false);
-                        @endphp
-                        <div class="p-4 bg-gray-50 rounded-xl border-l-4 {{ $exam->subject->color ?? 'border-gray-500' }}">
-                            <div class="flex items-start justify-between mb-2">
-                                <h4 class="font-semibold text-gray-900">{{ $exam->subject->name ?? 'N/A' }}</h4>
-                                <span class="text-xs font-medium px-2 py-1 bg-white rounded-full text-gray-600">
-                                    @if ($daysUntil < 0)
-                                        Passed
-                                    @elseif($daysUntil == 0)
-                                        Today
-                                    @else
-                                        H-{{ $daysUntil }}
-                                    @endif
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                @forelse ($nextExams as $exam)
+                    @php
+                        $examDate = \Carbon\Carbon::parse($exam->due_date);
+                        $now = \Carbon\Carbon::now();
+                        $daysUntil = $now->startOfDay()->diffInDays($examDate->startOfDay(), false);
+
+                        $statusClass = '';
+                        $statusText = '';
+
+                        if ($daysUntil < 0) {
+                            $statusClass = 'bg-gray-100 text-gray-700';
+                            $statusText = 'Passed';
+                        } elseif ($daysUntil == 0) {
+                            $statusClass = 'bg-amber-100 text-amber-800';
+                            $statusText = 'Today';
+                        } else {
+                            $statusClass = 'bg-blue-100 text-blue-800';
+                            $statusText = 'H-' . $daysUntil;
+                        }
+                    @endphp
+                    <div
+                        class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden group hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+                        <div class="h-2 w-full {{ $exam->subject->color ?? 'bg-gray-200' }}"></div>
+                        <div class="p-5">
+                            <div class="flex items-center justify-between">
+                                <p class="text-sm font-medium text-gray-600">{{ $exam->subject->code ?? 'N/A' }}</p>
+                                <span class="text-xs font-bold px-3 py-1 rounded-full {{ $statusClass }}">
+                                    {{ $statusText }}
                                 </span>
                             </div>
-                            <p class="text-sm text-gray-600">{{ $exam->subject->code ?? 'N/A' }}</p>
-                            <p class="text-sm text-gray-500 mt-2">{{ $examDate->format('d M Y') }} •
-                                {{ $exam->room ?? 'N/A' }}</p>
+                            <h4
+                                class="mt-2 text-lg font-semibold text-gray-800 group-hover:text-primary-600 transition-colors duration-300">
+                                {{ $exam->subject->name ?? 'N/A' }}</h4>
+                            <div class="mt-4 pt-4 border-t border-gray-100 flex items-center text-sm text-gray-500">
+                                <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                    </path>
+                                </svg>
+                                <span>{{ $examDate->format('d M Y') }}</span>
+                                <span class="mx-2 text-gray-300">|</span>
+                                <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
+                                    </path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                </svg>
+                                <span>{{ $exam->room ?? 'N/A' }}</span>
+                            </div>
                         </div>
-                    @empty
-                        <div class="md:col-span-3 text-center py-8">
-                            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor" aria-hidden="true">
-                                <path vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="2" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                            <p class="mt-2 text-sm text-gray-500">No upcoming exams. Keep up the good work!</p>
-                        </div>
-                    @endforelse
-                </div>
+                    </div>
+                @empty
+                    <div class="md:col-span-3 text-center py-12 bg-white rounded-2xl shadow-sm border border-gray-200">
+                        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor" aria-hidden="true">
+                            <path vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="2" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <p class="mt-2 text-sm text-gray-500">No upcoming exams. Keep up the good work!</p>
+                    </div>
+                @endforelse
             </div>
         </div>
     </div>

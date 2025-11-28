@@ -170,7 +170,7 @@ class TodolistController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'subject_id' => 'nullable|exists:subjects,id',
-            'type' => 'nullable|in:quiz,assignment,project',
+            'type' => 'required|in:quiz,assignment,project',
             'due_date' => 'required|date',
             'time' => 'nullable|date_format:H:i',
             'room' => 'nullable|string|max:255',
@@ -180,7 +180,6 @@ class TodolistController extends Controller
         ]);
 
         $validated['user_id'] = Auth::id();
-        $validated['type'] = null;
 
         Todolist::create($validated);
 
@@ -215,12 +214,11 @@ class TodolistController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'subject_id' => 'nullable|exists:subjects,id',
+            'type' => 'required|in:quiz,assignment,project',
             'due_date' => 'required|date',
             'priority' => 'required|in:low,medium,high',
             'status' => 'required|in:doing,done',
         ]);
-
-        $validated['type'] = null;
 
         $exam->update($validated);
 

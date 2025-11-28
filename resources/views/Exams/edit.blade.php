@@ -3,7 +3,7 @@
 @section('title', 'Edit Exam - MyKuliah')
 
 @section('content')
-    <div class="px-4 sm:px-6 lg:px-8 max-w-2xl mx-auto">
+    <div class="px-4 sm:px-6 lg:px-8 mx-auto">
         <div class="mb-6">
             <a href="{{ route('exams.index') }}" class="text-primary-600 hover:text-primary-700 font-medium">
                 ← Back to Exams
@@ -27,7 +27,7 @@
             <form action="{{ route('exams.update', $exam->id) }}" method="POST" class="space-y-6">
                 @csrf
                 @method('PUT')
-                <input type="hidden" name="type" value="exam">
+                <input type="hidden" name="type" value="assignment">
 
                 <!-- Title Field -->
                 <div>
@@ -59,7 +59,8 @@
                         class="w-full rounded-lg border border-gray-300 shadow-sm px-4 py-2 focus:border-primary-500 focus:ring-primary-500">
                         <option value="">-- Select Subject --</option>
                         @foreach ($subjects as $subject)
-                            <option value="{{ $subject->id }}" {{ old('subject_id', $exam->subject_id) == $subject->id ? 'selected' : '' }}>
+                            <option value="{{ $subject->id }}"
+                                {{ old('subject_id', $exam->subject_id) == $subject->id ? 'selected' : '' }}>
                                 {{ $subject->name }} ({{ $subject->code }})
                             </option>
                         @endforeach
@@ -102,8 +103,8 @@
                     <label for="due_date" class="block text-sm font-medium text-gray-700 mb-2">
                         Due Date <span class="text-red-500">*</span>
                     </label>
-                    <input type="datetime-local" id="due_date" name="due_date"
-                        value="{{ old('due_date', $exam->due_date) }}" required
+                    <input type="date" id="due_date" name="due_date" value="{{ old('due_date', $exam->due_date) }}"
+                        required
                         class="w-full rounded-lg border {{ $errors->has('due_date') ? 'border-red-500' : 'border-gray-300' }} shadow-sm px-4 py-2 focus:border-primary-500 focus:ring-primary-500">
                     @error('due_date')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>

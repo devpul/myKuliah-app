@@ -53,7 +53,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('xtra') }}"
+                            <a href="{{ route('xtra.index') }}"
                                 class="group flex gap-x-3 rounded-lg p-3 text-sm leading-6 font-semibold {{ request()->is('xtra*') ? 'bg-primary-50 text-primary-600' : 'text-gray-700 hover:text-primary-600 hover:bg-gray-50' }}">
                                 <svg class="h-6 w-6 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -172,7 +172,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('xtra') }}"
+                                    <a href="{{ route('xtra.index') }}"
                                         class="group flex gap-x-3 rounded-lg p-3 text-sm leading-6 font-semibold {{ request()->is('xtra*') ? 'bg-primary-50 text-primary-600' : 'text-gray-700 hover:text-primary-600 hover:bg-gray-50' }}">
                                         <svg class="h-6 w-6 shrink-0" fill="none" viewBox="0 0 24 24"
                                             stroke="currentColor">

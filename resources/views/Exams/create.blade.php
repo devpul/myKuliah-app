@@ -27,7 +27,11 @@
             <form action="{{ route('exams.store') }}" method="POST" class="space-y-6">
                 @csrf
                 <input type="hidden" name="category_id" value="{{ $examsCategory->id }}">
+<<<<<<< HEAD
                 <input type="hidden" name="type">
+=======
+                <input type="hidden" name="type" value="assignment">
+>>>>>>> 3fba8be6e9c23d35beea2fcec7307258b2975f3f
 
                 <!-- Title Field -->
                 <div>

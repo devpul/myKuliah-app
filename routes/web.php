@@ -62,7 +62,7 @@ Route::middleware('auth')->group(function () {
     Route::put('/exams/{exam}', [TodolistController::class, 'updateExam'])->name('exams.update');
     Route::delete('/exams/{exam}', [TodolistController::class, 'destroyExam'])->name('exams.destroy');
 
-    Route::get('/xtra', [ActivityController::class, 'index'])->name('xtra');
+    Route::resource('xtra', ActivityController::class)->names('xtra');
 
     Route::view('/settings', 'settings.index')->name('settings');
 
